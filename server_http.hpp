@@ -357,8 +357,8 @@ namespace SimpleWeb {
                     if(!ec) {
                         if(timeout_content>0)
                             timer->cancel();
+                        try {
                         auto http_version=stof(request->http_version);
-                        
                         auto range=request->header.equal_range("Connection");
                         for(auto it=range.first;it!=range.second;it++) {
                             if(boost::iequals(it->second, "close"))
@@ -366,6 +366,10 @@ namespace SimpleWeb {
                         }
                         if(http_version>1.05)
                             read_request_and_content(response->socket);
+                        
+                        } catch (std::exception e) {
+                            
+                        }
                     }
                 });
             });
